@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>os1_driver</name>
+  <version>0.0.1</version>
+  <description>The os1_driver package</description>
+
+  <maintainer email="daniel.dsouza@swri.org">Daniel D'Souza</maintainer>
+
+  <license>BSD</license>
+
+  <!-- <url type="repository">http://wiki.ros.org/os1_driver</url> -->
+
+  <author email="daniel.dsouza@swri.org">Daniel D'Souza</author> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>image_transport</depend>
+  <depend>jsoncpp</depend>
+  <depend>nodelet</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>swri_nodelet</depend>
+  <depend>tf2_ros</depend>
+
+  <build_depend>message_generation</build_depend>
+
+  <exec_depend>message_runtime</exec_depend>
+
+  <export>
+    <nodelet plugin="${prefix}/nodelet_plugins.xml"/>
+  </export>
+</package>

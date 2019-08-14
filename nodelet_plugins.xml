@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<library path="lib/libos1_driver">
+    <class type="os1_driver::OS1Driver"
+           name="os1_driver/os1_driver"
+           base_class_type="nodelet::Nodelet">
+        <description>
+            Nodelet to get packets from an OS1 lidar
+        </description>
+    </class>
+    <class type="os1_driver::OS1PacketsToPointCloud"
+           name="os1_driver/os1_packets_to_point_cloud"
+           base_class_type="nodelet::Nodelet">
+        <description>
+            Nodelet to convert packets to point clouds
+        </description>
+    </class>
+    <class type="os1_driver::OS1PointCloudToImage"
+           name="os1_driver/os1_point_cloud_to_image"
+           base_class_type="nodelet::Nodelet">
+        <description>
+            Nodelet to convert a point cloud into images
+        </description>
+    </class>
+</library>
