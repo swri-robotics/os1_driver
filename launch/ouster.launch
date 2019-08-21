@@ -13,7 +13,7 @@
         <param name="lidar_mode" type="string" value="1024x10"/>
         <param name="replay" value="false"/>
         <param name="os1_hostname" value="192.168.15.210"/>
-        <param name="os1_udp_dest" value="$(arg os1_udp_dest)"/>
+        <param name="os1_udp_destination" value="$(arg os1_udp_dest)"/>
         <param name="os1_lidar_port" value="$(arg os1_lidar_port)"/>
         <param name="os1_imu_port" value="$(arg os1_imu_port)"/>
         <param name="use_ptp"   value="true"/>
