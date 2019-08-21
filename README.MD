@@ -16,13 +16,13 @@ This nodelet advertises a service at `os1_config`, and the `os1_cloud` and `os1_
     type="nodelet" 
     name="ouster_driver" 
     args="os1_driver/os1_driver ouster_nodelet_manager">
-    <param name="lidar_mode"        value="1024x10"/>
-    <param name="replay"            value="false"/>
-    <param name="os1_hostname"      value="192.168.15.210"/>
-    <param name="os1_udp_dest"      value="192.168.15.100"/>
-    <param name="os1_lidar_port"    value="7502"/>
-    <param name="os1_imu_port"      value="7503"/>
-    <param name="use_ptp"           value="true"/>
+    <param name="lidar_mode"          value="1024x10"/>
+    <param name="replay"              value="false"/>
+    <param name="os1_hostname"        value="192.168.15.210"/>
+    <param name="os1_udp_destination" value="192.168.15.100"/>
+    <param name="os1_lidar_port"      value="7502"/>
+    <param name="os1_imu_port"        value="7503"/>
+    <param name="use_ptp"             value="true"/>
 </node>
 ```
 
