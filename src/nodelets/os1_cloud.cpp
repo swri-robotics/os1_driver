@@ -42,7 +42,6 @@ class OS1PacketsToPointCloud : public nodelet::Nodelet
 public:
   void onInit() override
   {
-    ros::spinOnce();
     cloud_loop_ = std::thread(&OS1PacketsToPointCloud::run, this);
   }
 

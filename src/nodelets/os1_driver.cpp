@@ -31,7 +31,6 @@ namespace os1_driver {
 
     void onInit() override
     {
-      ros::spinOnce(); // TODO: is this necessary?
       connection_loop_ = std::thread(&OS1Driver::run, this);
     }
 

@@ -38,7 +38,6 @@ namespace os1_driver {
 
     void onInit() override
     {
-      ros::spinOnce();
       image_thread_ = std::thread(&OS1PointCloudToImage::run, this);
     }
 
