@@ -80,7 +80,14 @@ namespace os1_driver {
 
       point_cloud_sub_ = nh.subscribe<sensor_msgs::PointCloud2, const sensor_msgs::PointCloud2::ConstPtr &>(
               "points", 500, [&](const sensor_msgs::PointCloud2::ConstPtr &msg) {
-                sensor_msgs::Image intensity_image, noise_image, range_image;
+                // sensor_msgs::Image intensity_image, noise_image, range_image;
+
+                auto intensity_image = boost::make_shared<sensor_msgs::Image>();
+                auto noise_image = boost::make_shared<sensor_msgs::Image>();
+                auto range_image = boost::make_shared<sensor_msgs::Image>();
+
+
+
                 ouster_ros::OS1::CloudOS1 cloud{};
 
                 // convert the pointcloud_msg into a PCL structure
@@ -93,26 +100,26 @@ namespace os1_driver {
                   ros::shutdown();
                 }
 
-                range_image.width = w_;
-                range_image.height = h_;
-                range_image.step = w_;
-                range_image.encoding = "mono8";
-                range_image.data.resize(w_ * h_);
-                range_image.header = msg->header;
+                range_image->width = w_;
+                range_image->height = h_;
+                range_image->step = w_;
+                range_image->encoding = "mono8";
+                range_image->data.resize(w_ * h_);
+                range_image->header = msg->header;
 
-                noise_image.width = w_;
-                noise_image.height = h_;
-                noise_image.step = w_;
-                noise_image.encoding = "mono8";
-                noise_image.data.resize(w_ * h_);
-                noise_image.header = msg->header;
+                noise_image->width = w_;
+                noise_image->height = h_;
+                noise_image->step = w_;
+                noise_image->encoding = "mono8";
+                noise_image->data.resize(w_ * h_);
+                noise_image->header = msg->header;
 
-                intensity_image.width = w_;
-                intensity_image.height = h_;
-                intensity_image.step = w_;
-                intensity_image.encoding = "mono8";
-                intensity_image.data.resize(w_ * h_);
-                intensity_image.header = msg->header;
+                intensity_image->width = w_;
+                intensity_image->height = h_;
+                intensity_image->step = w_;
+                intensity_image->encoding = "mono8";
+                intensity_image->data.resize(w_ * h_);
+                intensity_image->header = msg->header;
 
                 tbb::parallel_for(
                         tbb::blocked_range2d<size_t>(0, h_, 0, w_), [&](const tbb::blocked_range2d<size_t> &r) {
@@ -126,15 +133,15 @@ namespace os1_driver {
 
                               // write pixels
                               if (pt.range == 0) {
-                                range_image.data[u * w_ + v] = 0;
+                                range_image->data[u * w_ + v] = 0;
                               }
                               else
                               {
-                                range_image.data[u * w_ + v] =
+                                range_image->data[u * w_ + v] =
                                         255 - static_cast<char>(std::min(std::round(pt.range * 5e-3), 255.0));
                               }
-                              noise_image.data[u * w_ + v] = std::min(pt.noise, (uint16_t) 255);
-                              intensity_image.data[u * w_ + v] = static_cast<char>(std::min(pt.intensity, 255.f));
+                              noise_image->data[u * w_ + v] = std::min(pt.noise, (uint16_t) 255);
+                              intensity_image->data[u * w_ + v] = static_cast<char>(std::min(pt.intensity, 255.f));
                             }
                           }
                         });

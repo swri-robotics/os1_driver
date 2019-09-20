@@ -48,7 +48,7 @@ bool read_lidar_packet(const ouster::OS1::client& cli, PacketMsg& pm);
  * @param frame the frame to set in the resulting ROS message
  * @return ROS sensor message with fields populated from the OS1 packet
  */
-sensor_msgs::Imu packet_to_imu_msg(const PacketMsg& pm,
+  boost::shared_ptr<sensor_msgs::Imu> packet_to_imu_msg(const PacketMsg& pm,
                                    const std::string& frame);
 
 /**
@@ -58,7 +58,7 @@ sensor_msgs::Imu packet_to_imu_msg(const PacketMsg& pm,
  * @param frame the frame to set in the resulting ROS message
  * @return a ROS message containing the point cloud
  */
-sensor_msgs::PointCloud2 cloud_to_cloud_msg(const CloudOS1& cloud, ns timestamp,
+  boost::shared_ptr<sensor_msgs::PointCloud2> cloud_to_cloud_msg(const CloudOS1& cloud, ns timestamp,
                                             const std::string& frame);
 
 /**

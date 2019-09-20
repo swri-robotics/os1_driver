@@ -111,13 +111,13 @@ private:
     batch_and_publish_ = OS1::batch_to_iter<CloudOS1::iterator>(
             xyz_lut_, w_, h_, {}, &PointOS1::make,
             [&](uint64_t scan_ts) mutable {
-               sensor_msgs::PointCloud2 msg = ouster_ros::OS1::cloud_to_cloud_msg(cloud_, std::chrono::nanoseconds{scan_ts}, lidar_frame_);
+               auto msg = ouster_ros::OS1::cloud_to_cloud_msg(cloud_, std::chrono::nanoseconds{scan_ts}, lidar_frame_);
 
               if (use_system_timestamp_)
               {
                 // if packets are not PTP-timestamped, then the header is the time since the sensor was initialized,
                 // rather than the time since the epoch.
-                msg.header.stamp = ros::Time::now();
+                msg->header.stamp = ros::Time::now();
               }
 
                lidar_pub_.publish(msg);
