@@ -140,25 +140,25 @@ namespace os1_driver {
         }
         if (state & ouster::OS1::LIDAR_DATA && ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet.buf.data()))
         {
-          // lidar_packet_pub_.publish(lidar_packet);
+          lidar_packet_pub_.publish(lidar_packet);
 
-          auto lidar_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
-
-          if (ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet_msg->buf.data()))
-          {
-            lidar_packet_pub_.publish(lidar_packet_msg);
-          }
+//          auto lidar_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
+//
+//          if (ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet_msg->buf.data()))
+//          {
+//            lidar_packet_pub_.publish(lidar_packet_msg);
+//          }
         }
         if (state & ouster::OS1::IMU_DATA && ouster::OS1::read_imu_packet(*ouster_client, imu_packet.buf.data()))
         {
-          //imu_packet_pub_.publish(imu_packet);
+          imu_packet_pub_.publish(imu_packet);
 
-          auto i_packet = boost::make_shared<os1_driver::PacketMsg>();
-
-          if (ouster::OS1::read_imu_packet(*ouster_client, i_packet->buf.data()))
-          {
-            imu_packet_pub_.publish(i_packet);
-          }
+//          auto i_packet = boost::make_shared<os1_driver::PacketMsg>();
+//
+//          if (ouster::OS1::read_imu_packet(*ouster_client, i_packet->buf.data()))
+//          {
+//            imu_packet_pub_.publish(i_packet);
+//          }
         }
       }
     }
