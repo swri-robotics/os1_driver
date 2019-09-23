@@ -14,14 +14,18 @@ namespace OS1 {
 
 using namespace ouster::OS1;
 
-bool read_imu_packet(const client& cli, PacketMsg& m) {
-    m.buf.resize(imu_packet_bytes + 1);
-    return read_imu_packet(cli, m.buf.data());
+os1_driver::PacketMsgPtr read_imu_packet(const client& cli) {
+  auto imu_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
+  imu_packet_msg->buf.resize(imu_packet_bytes + 1);
+
+  return read_imu_packet(cli, imu_packet_msg->buf.data()) ? imu_packet_msg : nullptr;
 }
 
-bool read_lidar_packet(const client& cli, PacketMsg& m) {
-    m.buf.resize(lidar_packet_bytes + 1);
-    return read_lidar_packet(cli, m.buf.data());
+os1_driver::PacketMsgPtr read_lidar_packet(const client& cli) {
+  auto lidar_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
+  lidar_packet_msg->buf.resize(lidar_packet_bytes + 1);
+
+  return read_lidar_packet(cli, lidar_packet_msg->buf.data()) ? lidar_packet_msg : nullptr;
 }
 
 boost::shared_ptr<sensor_msgs::Imu> packet_to_imu_msg(const PacketMsg& p, const std::string& frame) {

@@ -17,6 +17,7 @@
 #include "os1_driver/OS1ConfigSrv.h"
 #include "os1_driver/ouster/os1_util.h"
 #include "os1_driver/ouster/os1.h"
+#include "os1_driver/ouster_ros/os1_ros.h"
 
 namespace OS1 = ouster::OS1;
 
@@ -133,32 +134,30 @@ namespace os1_driver {
         if (state == ouster::OS1::EXIT)
         {
           NODELET_FATAL_STREAM("poll_client: caught signal, exiting");
+          return;
         }
         if (state & ouster::OS1::ERROR)
         {
           NODELET_FATAL_STREAM("pol_client: returned error");
+          continue;
         }
-        if (state & ouster::OS1::LIDAR_DATA && ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet.buf.data()))
+        if (state & ouster::OS1::LIDAR_DATA) // && ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet.buf.data()))
         {
-          lidar_packet_pub_.publish(lidar_packet);
-
-//          auto lidar_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
-//
-//          if (ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet_msg->buf.data()))
-//          {
-//            lidar_packet_pub_.publish(lidar_packet_msg);
-//          }
+          auto lidar_packet_msg = ouster_ros::OS1::read_lidar_packet(*ouster_client);
+          if (lidar_packet_msg != nullptr)
+          {
+            lidar_packet_pub_.publish(lidar_packet_msg);
+          }
+          // lidar_packet_pub_.publish(lidar_packet);
         }
-        if (state & ouster::OS1::IMU_DATA && ouster::OS1::read_imu_packet(*ouster_client, imu_packet.buf.data()))
+        if (state & ouster::OS1::IMU_DATA) // && ouster::OS1::read_imu_packet(*ouster_client, imu_packet.buf.data()))
         {
-          imu_packet_pub_.publish(imu_packet);
-
-//          auto i_packet = boost::make_shared<os1_driver::PacketMsg>();
-//
-//          if (ouster::OS1::read_imu_packet(*ouster_client, i_packet->buf.data()))
-//          {
-//            imu_packet_pub_.publish(i_packet);
-//          }
+          auto imu_packet_msg = ouster_ros::OS1::read_imu_packet(*ouster_client);
+          if (imu_packet_msg != nullptr)
+          {
+            imu_packet_pub_.publish(imu_packet_msg);
+          }
+          // imu_packet_pub_.publish(imu_packet);
         }
       }
     }

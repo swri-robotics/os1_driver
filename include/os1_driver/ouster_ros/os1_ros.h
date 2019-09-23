@@ -13,8 +13,7 @@
 #include <string>
 
 #include "os1_driver/ouster/os1.h"
-//#include "ouster_ros/PacketMsg.h"
-# include "os1_driver/PacketMsg.h"
+#include "os1_driver/PacketMsg.h"
 #include "point_os1.h"
 
 namespace ouster_ros {
@@ -31,7 +30,7 @@ using PacketMsg = os1_driver::PacketMsg;
  * @param pm the destination packet message
  * @return whether reading was successful
  */
-bool read_imu_packet(const ouster::OS1::client& cli, PacketMsg& pm);
+os1_driver::PacketMsgPtr read_imu_packet(const ouster::OS1::client& cli);
 
 /**
  * Read a lidar packet into a ROS message. Blocks for up to a second if no data
@@ -40,7 +39,7 @@ bool read_imu_packet(const ouster::OS1::client& cli, PacketMsg& pm);
  * @param pm the destination packet message
  * @return whether reading was successful
  */
-bool read_lidar_packet(const ouster::OS1::client& cli, PacketMsg& pm);
+os1_driver::PacketMsgPtr read_lidar_packet(const ouster::OS1::client& cli);
 
 /**
  * Parse an imu packet message into a ROS imu message
