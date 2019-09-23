@@ -27,8 +27,7 @@ using PacketMsg = os1_driver::PacketMsg;
  * Read an imu packet into a ROS message. Blocks for up to a second if no data
  * is available.
  * @param cli the OS1 client
- * @param pm the destination packet message
- * @return whether reading was successful
+ * @return shared pointer to packet message.
  */
 os1_driver::PacketMsgPtr read_imu_packet(const ouster::OS1::client& cli);
 
@@ -36,8 +35,7 @@ os1_driver::PacketMsgPtr read_imu_packet(const ouster::OS1::client& cli);
  * Read a lidar packet into a ROS message. Blocks for up to a second if no data
  * is available.
  * @param cli the OS1 client
- * @param pm the destination packet message
- * @return whether reading was successful
+ * @return shared pointer to packet message.
  */
 os1_driver::PacketMsgPtr read_lidar_packet(const ouster::OS1::client& cli);
 
