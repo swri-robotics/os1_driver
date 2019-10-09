@@ -17,6 +17,7 @@
 #include "os1_driver/OS1ConfigSrv.h"
 #include "os1_driver/ouster/os1_util.h"
 #include "os1_driver/ouster/os1.h"
+#include "os1_driver/ouster_ros/os1_ros.h"
 
 namespace OS1 = ouster::OS1;
 
@@ -31,7 +32,6 @@ namespace os1_driver {
 
     void onInit() override
     {
-      ros::spinOnce(); // TODO: is this necessary?
       connection_loop_ = std::thread(&OS1Driver::run, this);
     }
 
@@ -96,10 +96,6 @@ namespace os1_driver {
       lidar_packet_pub_ = nh.advertise<PacketMsg>("lidar_packets", 1280);
       imu_packet_pub_ = nh.advertise<PacketMsg>("imu_packets", 100);
 
-      PacketMsg lidar_packet, imu_packet;
-      lidar_packet.buf.resize(ouster::OS1::lidar_packet_bytes + 1);
-      imu_packet.buf.resize(ouster::OS1::imu_packet_bytes + 1);
-
       // reconfigure the sensor according to the parameters
       NODELET_INFO_STREAM("Connecting to sensor at " << hostname_ << "...");
       NODELET_INFO_STREAM("Sending data to " << udp_dest_ << " using lidar_mode: " << lidar_mode_);
@@ -124,7 +120,7 @@ namespace os1_driver {
         NODELET_FATAL_STREAM("Failed to initialize sensor at: " << hostname_);
         return;
       }
-      NODELET_INFO_STREAM("Sensor reconfigured succesfully, waiting for data...");
+      NODELET_INFO_STREAM("Sensor reconfigured successfully, waiting for data...");
 
       // the actual connection loop
       while (ros::ok())
@@ -134,18 +130,28 @@ namespace os1_driver {
         if (state == ouster::OS1::EXIT)
         {
           NODELET_FATAL_STREAM("poll_client: caught signal, exiting");
+          return;
         }
         if (state & ouster::OS1::ERROR)
         {
-          NODELET_FATAL_STREAM("pol_client: returned error");
+          NODELET_FATAL_STREAM("poll_client: returned error");
+          continue;
         }
-        if (state & ouster::OS1::LIDAR_DATA && ouster::OS1::read_lidar_packet(*ouster_client, lidar_packet.buf.data()))
+        if (state & ouster::OS1::LIDAR_DATA)
         {
-          lidar_packet_pub_.publish(lidar_packet);
+          auto lidar_packet_msg = ouster_ros::OS1::read_lidar_packet(*ouster_client);
+          if (lidar_packet_msg != nullptr)
+          {
+            lidar_packet_pub_.publish(lidar_packet_msg);
+          }
         }
-        if (state & ouster::OS1::IMU_DATA && ouster::OS1::read_imu_packet(*ouster_client, imu_packet.buf.data()))
+        if (state & ouster::OS1::IMU_DATA)
         {
-          imu_packet_pub_.publish(imu_packet);
+          auto imu_packet_msg = ouster_ros::OS1::read_imu_packet(*ouster_client);
+          if (imu_packet_msg != nullptr)
+          {
+            imu_packet_pub_.publish(imu_packet_msg);
+          }
         }
       }
     }

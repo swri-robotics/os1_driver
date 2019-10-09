@@ -13,8 +13,7 @@
 #include <string>
 
 #include "os1_driver/ouster/os1.h"
-//#include "ouster_ros/PacketMsg.h"
-# include "os1_driver/PacketMsg.h"
+#include "os1_driver/PacketMsg.h"
 #include "point_os1.h"
 
 namespace ouster_ros {
@@ -28,19 +27,17 @@ using PacketMsg = os1_driver::PacketMsg;
  * Read an imu packet into a ROS message. Blocks for up to a second if no data
  * is available.
  * @param cli the OS1 client
- * @param pm the destination packet message
- * @return whether reading was successful
+ * @return shared pointer to packet message.
  */
-bool read_imu_packet(const ouster::OS1::client& cli, PacketMsg& pm);
+os1_driver::PacketMsgPtr read_imu_packet(const ouster::OS1::client& cli);
 
 /**
  * Read a lidar packet into a ROS message. Blocks for up to a second if no data
  * is available.
  * @param cli the OS1 client
- * @param pm the destination packet message
- * @return whether reading was successful
+ * @return shared pointer to packet message.
  */
-bool read_lidar_packet(const ouster::OS1::client& cli, PacketMsg& pm);
+os1_driver::PacketMsgPtr read_lidar_packet(const ouster::OS1::client& cli);
 
 /**
  * Parse an imu packet message into a ROS imu message
@@ -48,7 +45,7 @@ bool read_lidar_packet(const ouster::OS1::client& cli, PacketMsg& pm);
  * @param frame the frame to set in the resulting ROS message
  * @return ROS sensor message with fields populated from the OS1 packet
  */
-sensor_msgs::Imu packet_to_imu_msg(const PacketMsg& pm,
+  boost::shared_ptr<sensor_msgs::Imu> packet_to_imu_msg(const PacketMsg& pm,
                                    const std::string& frame);
 
 /**
@@ -58,7 +55,7 @@ sensor_msgs::Imu packet_to_imu_msg(const PacketMsg& pm,
  * @param frame the frame to set in the resulting ROS message
  * @return a ROS message containing the point cloud
  */
-sensor_msgs::PointCloud2 cloud_to_cloud_msg(const CloudOS1& cloud, ns timestamp,
+  boost::shared_ptr<sensor_msgs::PointCloud2> cloud_to_cloud_msg(const CloudOS1& cloud, ns timestamp,
                                             const std::string& frame);
 
 /**

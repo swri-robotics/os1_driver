@@ -14,57 +14,60 @@ namespace OS1 {
 
 using namespace ouster::OS1;
 
-bool read_imu_packet(const client& cli, PacketMsg& m) {
-    m.buf.resize(imu_packet_bytes + 1);
-    return read_imu_packet(cli, m.buf.data());
+os1_driver::PacketMsgPtr read_imu_packet(const client& cli) {
+  auto imu_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
+  imu_packet_msg->buf.resize(imu_packet_bytes + 1);
+
+  return read_imu_packet(cli, imu_packet_msg->buf.data()) ? imu_packet_msg : nullptr;
 }
 
-bool read_lidar_packet(const client& cli, PacketMsg& m) {
-    m.buf.resize(lidar_packet_bytes + 1);
-    return read_lidar_packet(cli, m.buf.data());
+os1_driver::PacketMsgPtr read_lidar_packet(const client& cli) {
+  auto lidar_packet_msg = boost::make_shared<os1_driver::PacketMsg>();
+  lidar_packet_msg->buf.resize(lidar_packet_bytes + 1);
+
+  return read_lidar_packet(cli, lidar_packet_msg->buf.data()) ? lidar_packet_msg : nullptr;
 }
 
-sensor_msgs::Imu packet_to_imu_msg(const PacketMsg& p,
-                                   const std::string& frame) {
+boost::shared_ptr<sensor_msgs::Imu> packet_to_imu_msg(const PacketMsg& p, const std::string& frame) {
     const double standard_g = 9.80665;
-    sensor_msgs::Imu m;
+    auto m = boost::make_shared<sensor_msgs::Imu>();
     const uint8_t* buf = p.buf.data();
 
-    m.header.stamp.fromNSec(imu_gyro_ts(buf));
-    m.header.frame_id = frame;
+    m->header.stamp.fromNSec(imu_gyro_ts(buf));
+    m->header.frame_id = frame;
 
-    m.orientation.x = 0;
-    m.orientation.y = 0;
-    m.orientation.z = 0;
-    m.orientation.w = 0;
+    m->orientation.x = 0;
+    m->orientation.y = 0;
+    m->orientation.z = 0;
+    m->orientation.w = 0;
 
-    m.linear_acceleration.x = imu_la_x(buf) * standard_g;
-    m.linear_acceleration.y = imu_la_y(buf) * standard_g;
-    m.linear_acceleration.z = imu_la_z(buf) * standard_g;
+    m->linear_acceleration.x = imu_la_x(buf) * standard_g;
+    m->linear_acceleration.y = imu_la_y(buf) * standard_g;
+    m->linear_acceleration.z = imu_la_z(buf) * standard_g;
 
-    m.angular_velocity.x = imu_av_x(buf) * M_PI / 180.0;
-    m.angular_velocity.y = imu_av_y(buf) * M_PI / 180.0;
-    m.angular_velocity.z = imu_av_z(buf) * M_PI / 180.0;
+    m->angular_velocity.x = imu_av_x(buf) * M_PI / 180.0;
+    m->angular_velocity.y = imu_av_y(buf) * M_PI / 180.0;
+    m->angular_velocity.z = imu_av_z(buf) * M_PI / 180.0;
 
     for (int i = 0; i < 9; i++) {
-        m.orientation_covariance[i] = -1;
-        m.angular_velocity_covariance[i] = 0;
-        m.linear_acceleration_covariance[i] = 0;
+        m->orientation_covariance[i] = -1;
+        m->angular_velocity_covariance[i] = 0;
+        m->linear_acceleration_covariance[i] = 0;
     }
     for (int i = 0; i < 9; i += 4) {
-        m.linear_acceleration_covariance[i] = 0.01;
-        m.angular_velocity_covariance[i] = 6e-4;
+        m->linear_acceleration_covariance[i] = 0.01;
+        m->angular_velocity_covariance[i] = 6e-4;
     }
 
     return m;
 }
 
-sensor_msgs::PointCloud2 cloud_to_cloud_msg(const CloudOS1& cloud, ns timestamp,
-                                            const std::string& frame) {
-    sensor_msgs::PointCloud2 msg{};
-    pcl::toROSMsg(cloud, msg);
-    msg.header.frame_id = frame;
-    msg.header.stamp.fromNSec(timestamp.count());
+boost::shared_ptr<sensor_msgs::PointCloud2> cloud_to_cloud_msg(const CloudOS1& cloud, ns timestamp, const std::string& frame) {
+    // sensor_msgs::PointCloud2 msg{};
+    auto msg = boost::make_shared<sensor_msgs::PointCloud2>();
+    pcl::toROSMsg(cloud, *msg);
+    msg->header.frame_id = frame;
+    msg->header.stamp.fromNSec(timestamp.count());
     return msg;
 }
 

@@ -4,7 +4,9 @@
  */
 
 #pragma once
+#ifndef PCL_NO_PRECOMPILE
 #define PCL_NO_PRECOMPILE
+#endif
 #include <pcl/point_types.h>
 
 namespace ouster_ros {
