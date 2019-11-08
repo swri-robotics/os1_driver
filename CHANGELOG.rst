@@ -2,8 +2,8 @@
 Changelog for package os1_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.3 (2019-11-08)
+------------------
 * update jsoncpp dependency
 * Contributors: Daniel D'Souza
 
