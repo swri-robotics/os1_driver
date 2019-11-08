@@ -1,0 +1,20 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package os1_driver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Merge pull request `#5 <https://github.com/swri-robotics/os1_driver/issues/5>`_ from swri-robotics/4-fix-nodelet-issues
+  WIP: implement shared pointers to make zero copy work, fix startup issues.
+* fixed spelling errors, removed commented code
+* updated driver to use shared pointers
+* this works, but I'm not sure why the shared ptr messages does not...
+* needs testing
+* fix nodelet hanging issue
+* Merge pull request `#3 <https://github.com/swri-robotics/os1_driver/issues/3>`_ from swri-robotics/1-fix-documentation
+  changed udp_dest to udp_destination
+* changed udp_dest to udp_destination
+* removed empty tgz
+* ready for release
+* Initial commit
+* Contributors: Daniel D'Souza
