@@ -2,6 +2,11 @@
 Changelog for package os1_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update jsoncpp dependency
+* Contributors: Daniel D'Souza
+
 0.0.2 (2019-11-08)
 ------------------
 * Merge pull request `#5 <https://github.com/swri-robotics/os1_driver/issues/5>`_ from swri-robotics/4-fix-nodelet-issues
