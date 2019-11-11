@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>os1_driver</name>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   <description>The os1_driver package</description>
 
   <maintainer email="daniel.dsouza@swri.org">Daniel D'Souza</maintainer>
