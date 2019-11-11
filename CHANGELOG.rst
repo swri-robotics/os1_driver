@@ -2,6 +2,13 @@
 Changelog for package os1_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#7 <https://github.com/swri-robotics/os1_driver/issues/7>`_ from swri-robotics/sync-dependencies-to-packagexml
+  added tf2_geometry_msgs to package.xml
+* added tf2_geometry_msgs to package.xml
+* Contributors: Daniel D'Souza
+
 0.0.4 (2019-11-11)
 ------------------
 * Merge pull request `#6 <https://github.com/swri-robotics/os1_driver/issues/6>`_ from swri-robotics/add-tbb-dependency
