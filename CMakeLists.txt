@@ -15,9 +15,11 @@ find_package(catkin REQUIRED COMPONENTS
         pcl_ros
         pcl_conversions
         roscpp
-        std_msgs
         sensor_msgs
-        swri_nodelet)
+        std_msgs
+        swri_nodelet
+        tf2_ros
+        tf2_geometry_msgs)
 
 ### Intel Threading Building Blocks ###
 find_package(PkgConfig REQUIRED)
